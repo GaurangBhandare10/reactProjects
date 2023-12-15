@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import Layout from './Layout'
+import Home from './Home'
+import NewPost from './NewPost'
+import PostPage from './PostPage'
+import About from './About'
+import Missing from './Missing'
+import { Route, Routes} from 'react-router-dom' 
+import EditPost from './EditPost';
+import { DataProvider } from './context/DataContext'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <DataProvider>
+        <Routes>
+          <Route path='/' element={<Layout />}>
+            <Route  index  element={<Home/>}/>
+             {/* here we used the searchResults in the posts prop bcoz we want to add the functionality of displaying the post by searching 
+            as well as displaying the post in reverse order * this is similar to the thing 
+            which we did in chapter 9 just that here we defined an extra varaible searchresults and setSearchResults */}
+              <Route  path="post">
+                <Route index element={<NewPost/>}/>
+                  <Route  path=":id" element={<PostPage/>}/>
+              </Route>
+              <Route path= 'edit'>
+                <Route path=':id' index element={<EditPost/>}/>
+              </Route>
+              <Route  path='about' element={<About/>}/> 
+              <Route path="*" element={<Missing/>}/>
+          </Route>
+        </Routes>
+    </DataProvider>
   );
 }
 
